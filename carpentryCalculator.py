@@ -12,11 +12,14 @@ def mainMenu(units):
     print("    Main Menu")
     print("--------------------")
     print("1 Right Triangle")
-    print("2 Square\n")
+    print("2 Right Scalene Triangle")
+    print("3 Square\n")
 
-    menuSelection = inputValidation(1,2)
+    menuSelection = inputValidation(1,3)
     if menuSelection == 1:
         rightTriangle(units)
+    elif menuSelection == 2:
+        rightScaleneTriangle(units)
 
 def selectUnits():
     print("    Units")
@@ -42,6 +45,37 @@ def inputValidation(arg1, arg2):
                 continue
             else:
                 return validatedInput
+
+def rightScaleneTriangle(units):
+    print("To determine the length of a right scalene triangle's hypotenuse, please enter the base and the base angle:")
+        
+    if units == "Metric":
+        print("Base:\t")
+        triangleBase = metricToDecimal() #Side c
+        triangleAAngle = int(input("Angle in degrees:\t")) #angle A
+        triangleBAngle = 90 
+        triangleCAngle = 180 - (triangleAAngle + triangleBAngle)
+        sinB = math.sin(math.radians(triangleBAngle))
+        sinC = math.sin(math.radians(triangleCAngle))
+        hypotenuse = triangleBase * (sinB/sinC) #Side b
+        sizeList = decimalToMetric(hypotenuse)
+        print("The hypotenuse is: ", int(sizeList[0]), "meters, ", int(sizeList[1]), "centimeters, and ", int(sizeList[2])," millimeters.")
+    else:
+        print("Base:\t")
+        triangleBase = imperialToDecimal() #Side c
+        triangleAAngle = int(input("Angle in degrees:\t")) #angle A
+        triangleBAngle = 90 
+        triangleCAngle = 180 - (triangleAAngle + triangleBAngle)
+        hypotenuse = triangleBase * (math.sin(triangleBAngle)/math.sin(triangleCAngle)) #Side b
+        sizeList = decimalToImerial(hypotenuse)
+        if len(sizeList) == 1:
+            print("The hypotenuse is: ", int(sizeList[0]), "feet.")
+        elif len(sizeList) == 2:
+            print("The hypotenuse is: ", int(sizeList[0]), "feet, ", int(sizeList[1]), "inches.")
+        elif len(sizeList) == 3:
+            print("The hypotenuse is: ", int(sizeList[0]), "feet, ", int(sizeList[1]), "inches, and ", sizeList[2],".")
+        else: print("Program Error")
+
 
 def rightTriangle(units):
     print("To determine the length of the hypotenuse, please enter the base and altitude:")
@@ -97,7 +131,7 @@ def metricToDecimal():
         print("Invalid Entry\n")
         continue
       else:
-          decimalMeasurment = float(concat(str(meters),".",str(cm),str(mm)))
+          decimalMeasurment = float(meters) + float(cm / 100) + float(mm / 1000)
           return decimalMeasurment
 
 def decimalToImerial(value):   #29.678
